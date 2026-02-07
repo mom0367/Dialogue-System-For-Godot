@@ -1,0 +1,21 @@
+# LANGUAGE translation for 2d typewriter test for the following files:
+# res://Node2D.tscn
+#
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Language: en\n"
+"Project-Id-Version: 2d typewriter test\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: Node2D.tscn
+msgid "Placeholder"
+msgstr ""
+
+#: Node2D.tscn
+msgid "TEST BUTTON\n"
+msgstr "Wow Epic Style I think\n"

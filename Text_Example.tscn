@@ -1,0 +1,103 @@
+[gd_scene format=3 uid="uid://8th5qppecxoo"]
+
+[ext_resource type="AudioStream" uid="uid://cyhbu3wj03vbg" path="res://Type.wav" id="1_b4yrm"]
+[ext_resource type="Script" uid="uid://0acv1aey728c" path="res://Text_Writer_Effect.gd" id="2_7gi6b"]
+[ext_resource type="Script" uid="uid://cke8kapf4vgtm" path="res://Dialogue_Choices.gd" id="3_eyc8d"]
+
+[sub_resource type="Gradient" id="Gradient_ri2ts"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.404511, 0.404511, 0.404511, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ol07r"]
+gradient = SubResource("Gradient_ri2ts")
+
+[sub_resource type="GDScript" id="GDScript_ri2ts"]
+script/source = "extends Node
+
+@onready var curparent = self.get_parent()
+
+func _ready():
+	await get_tree().create_timer(0.25).timeout
+	
+	curparent.text_receive.emit([
+	\"Example starter text, holding input speeds up text, click when text is finished to continue.\",
+	[\"Example text that runs a function, \", func(): print(\"Ah\"), \"printing to the console, this also shows how a nested array works!\"],
+	#{\"Choice 1\": \"Awesome\", \"Choice 2\": \"What\"},
+	{\"[b]How do you make dialogue choices[/b]\": \"Use dictionaries to make dialogue choices, the keys function as choices and the values as outputs!\",
+	\"Function return dialogue?\": [func(): return \"Example of a function returning a string, you can use these to make conditional dialogue!\"]},
+	\"And now you're being presented with a dialogue choice, waow.\"
+	
+	])
+"
+
+[node name="Node2D" type="Node2D" unique_id=1103734889]
+
+[node name="Dialogue_GUI" type="Control" parent="." unique_id=1900611611]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Text Box" type="TextureRect" parent="Dialogue_GUI" unique_id=1510102547]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 6.4
+anchor_top = 11.6
+anchor_right = 22.4
+anchor_bottom = 15.6
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_ol07r")
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="RichTextLabel" parent="Dialogue_GUI/Text Box" unique_id=936038881]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0125
+anchor_top = 0.05
+anchor_right = 0.9875
+anchor_bottom = 0.95
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+bbcode_enabled = true
+text = "Placeholder"
+fit_content = true
+scroll_active = false
+metadata/_edit_use_anchors_ = true
+
+[node name="TypeSound" type="AudioStreamPlayer" parent="Dialogue_GUI/Text Box/Label" unique_id=1742809320]
+stream = ExtResource("1_b4yrm")
+volume_db = -35.422
+pitch_scale = 0.64
+mix_target = 1
+max_polyphony = 64
+
+[node name="Writer_Effect_Handler" type="Node" parent="Dialogue_GUI/Text Box/Label" unique_id=608238993 node_paths=PackedStringArray("dialogue_gui", "text_label", "text_box", "AudioPlayer", "choice_box")]
+script = ExtResource("2_7gi6b")
+dialogue_gui = NodePath("../../..")
+text_label = NodePath("..")
+text_box = NodePath("../..")
+AudioPlayer = NodePath("../TypeSound")
+choice_box = NodePath("../../../Choice_Box")
+
+[node name="Signal_Sender_Temp" type="Node" parent="Dialogue_GUI/Text Box/Label/Writer_Effect_Handler" unique_id=498153104]
+script = SubResource("GDScript_ri2ts")
+
+[node name="Choice_Box" type="ItemList" parent="Dialogue_GUI" unique_id=1515818289 node_paths=PackedStringArray("Text_Handler")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 20.8
+anchor_top = 3.2
+anchor_right = 27.25
+anchor_bottom = 9.45
+grow_horizontal = 0
+script = ExtResource("3_eyc8d")
+Text_Handler = NodePath("../Text Box/Label/Writer_Effect_Handler")
+metadata/_edit_use_anchors_ = true
+
+[node name="Button" type="Button" parent="." unique_id=1997584421]
+offset_right = 64.0
+offset_bottom = 64.0
+text = "TEST BUTTON
+"
