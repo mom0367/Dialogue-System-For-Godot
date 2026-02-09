@@ -10,8 +10,7 @@ The way the code parser works is by using a series of "master" arrays and subarr
 Making dialogue lines:
 	
 	While there is a bit of functionality for sending strings directly to the parser for ease of use, primarily you want to turn dialogue into arrays, for example:
-	The first array of a dialogue/dialogue branch is considered the master array, and everything should be wrapped into it 
-	(I might add a way to detect single arrays without needing a master wrap at some point but I'm lazy sorry lol)
+	The first array of a dialogue/dialogue branch is considered the master array, and everything should be wrapped into it.
 	
 	[["Test dialogue"]] - A basic one "line" dialogue, wrapped in a master array
 	[["Test1", "Test2"]] - A basic two "line" dialogue, wrapped in a master array
@@ -27,7 +26,10 @@ Putting functions in dialogue:
 	
 	Giving the function a return will cause the return value to be parsed as an array, this is useful for making dialogue conditions, I suggest only doing this at the end of an array.
 	
+
+Function returns:
 	
+	Returning values such as arrays or dictionaries from a function will cause them to be input into the parser.
 	
 	
 Additional credits:
