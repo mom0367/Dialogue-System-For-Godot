@@ -59,7 +59,6 @@ func write_text(current_text):
 		AudioPlayer.play()
 
 		var wait_time = ((1 / characters_per_second) / clampf(speed_up_amount * int(speed_up), 1, INF))  #Waits an amount affected by the speed up amount/bool
-		#current equation can't make the text slower if you wanted that for some reason
 		await get_tree().create_timer(wait_time).timeout
 	
 	#print("Line written: " + str(current_text))

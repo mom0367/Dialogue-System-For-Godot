@@ -18,6 +18,7 @@ config/name="Dialogue_System"
 run/main_scene="res://Text_Example.tscn"
 config/features=PackedStringArray("4.6")
 run/max_fps=165
+config/icon="uid://85xvvywlrgfr"
 
 [dotnet]
 

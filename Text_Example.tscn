@@ -95,9 +95,3 @@ grow_horizontal = 0
 script = ExtResource("3_eyc8d")
 Text_Handler = NodePath("../Text Box/Label/Writer_Effect_Handler")
 metadata/_edit_use_anchors_ = true
-
-[node name="Button" type="Button" parent="." unique_id=1997584421]
-offset_right = 64.0
-offset_bottom = 64.0
-text = "TEST BUTTON
-"

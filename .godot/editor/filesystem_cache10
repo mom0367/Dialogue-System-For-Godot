@@ -1,8 +1,9 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1770501728
+::res://::1770630645
 Dialogue_Choices.gd::GDScript::5485008856921937410::1770448673::0::1::::DialogueChoices<>ItemList<><>0<>0<><>::
 Icon.svg::CompressedTexture2D::2379598306263106763::1770459477::1770459481::1::::<><><>0<>0<>b18ebbc6ff7f6a8a2601c3e87d37d073<>res://.godot/imported/Icon.svg-209197100d5fe6cba9c168636c60b76c.ctex::
-README.txt::TextFile::-1::1770459684::0::1::::<><><>0<>0<><>::
-Text_Example.tscn::PackedScene::2355934474381367478::1770460112::0::1::::<><><>0<>0<><>::uid://cyhbu3wj03vbg::::res://Type.wav<>uid://0acv1aey728c::::res://Text_Writer_Effect.gd<>uid://cke8kapf4vgtm::::res://Dialogue_Choices.gd
+LICENSE.md::TextFile::-1::1770524501::0::1::::<><><>0<>0<><>::
+README.txt::TextFile::-1::1770503944::0::1::::<><><>0<>0<><>::
+Text_Example.tscn::PackedScene::2355934474381367478::1770620172::0::1::::<><><>0<>0<><>::uid://cyhbu3wj03vbg::::res://Type.wav<>uid://0acv1aey728c::::res://Text_Writer_Effect.gd<>uid://cke8kapf4vgtm::::res://Dialogue_Choices.gd
 Text_Writer_Effect.gd::GDScript::1754881392430552912::1770457315::0::1::::TextHandler<>Node<><>0<>0<><>::
 Type.wav::AudioStreamWAV::6471922196931215372::1715761984::1770459691::1::::<><><>0<>0<>978eaedca7e775ba86bb5c5686523d01<>res://.godot/imported/Type.wav-c660fcd2aa59821d67aac5b006a1ca97.sample::
