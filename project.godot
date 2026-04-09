@@ -26,7 +26,6 @@ project/assembly_name="2d typewriter test"
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://Template Pot.po")
 locale/include_text_server_data=true
 
 [physics]

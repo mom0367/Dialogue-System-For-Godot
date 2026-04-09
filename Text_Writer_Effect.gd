@@ -1,6 +1,5 @@
 extends Node
 class_name TextHandler
-#TODO make some of these not export and just take in the node above instead of needing to input the associated text box
 signal text_receive(incomingText : String)
 signal text_written
 signal continue_dialogue
@@ -13,8 +12,12 @@ signal choice_receive
 signal dialogue_tree_ended
 
 @export var characters_per_second : float = 20
-@export var text_Sound_Pitch_Minimum : float = 0.75
-@export var text_Sound_Pitch_Maximum : float = 1
+##The time that the text waits before automatically continuing, set to -1 to disable
+@export var auto_continue_time : float = -1
+##The lowest pitch the text typing effect can do.
+@export var sound_Pitch_Minimum : float = 0.75
+##The highest pitch the text typing effect can do.
+@export var sound_Pitch_Maximum : float = 1
 @export var dialogue_gui : Node
 @export var text_label : Node
 @export var text_box : Node
@@ -34,7 +37,7 @@ signal dialogue_tree_ended
 
 
 
-func write_text(current_text):
+func write_text(current_text) -> void:
 	
 	#print("Writing text " + current_text)
 	cancel_write = false
@@ -42,7 +45,6 @@ func write_text(current_text):
 	line_written = false
 	text_label.text = (text_label.text + current_text)
 	#print("Adding " + current_text)
-
 	var bbcoderegex : RegEx = RegEx.new()
 	bbcoderegex.compile("\\[.*?\\]")
 	var textNoBBCode : String = bbcoderegex.sub(current_text, "", true)
@@ -55,10 +57,10 @@ func write_text(current_text):
 
 		text_label.visible_characters = text_label.visible_characters + 1;
 		
-		AudioPlayer.pitch_scale = RNG.randf_range(text_Sound_Pitch_Minimum, text_Sound_Pitch_Maximum)
+		AudioPlayer.pitch_scale = RNG.randf_range(sound_Pitch_Minimum, sound_Pitch_Maximum)
 		AudioPlayer.play()
 
-		var wait_time = ((1 / characters_per_second) / clampf(speed_up_amount * int(speed_up), 1, INF))  #Waits an amount affected by the speed up amount/bool
+		var wait_time : float = ((1 / characters_per_second) / clampf(speed_up_amount * int(speed_up), 1, INF))  #Waits an amount affected by the speed up amount/bool
 		await get_tree().create_timer(wait_time).timeout
 	
 	#print("Line written: " + str(current_text))
@@ -67,7 +69,7 @@ func write_text(current_text):
 
 
 
-func _ready():
+func _ready() -> void:
 	
 	choice_receive.connect(func(incoming_data): chosen_choice = incoming_data)
 	text_receive.connect(func(incoming_data): parse_master_array(incoming_data))
@@ -77,21 +79,17 @@ func _ready():
 	text_box.gui_input.connect(func(event):
 		
 		if event is InputEventMouseButton:
-			
+			#print("Dialogue finished?: " + str(dialogue_finished))
 			if dialogue_finished == true:
 				if event.pressed:
 					dialogue_gui.visible = false
-				
 			if not line_written:
-				
 				speed_up = event.pressed
-				
 			else:
-				
 				continue_dialogue.emit()
 	)
 	
-func parse_master_array(incoming_data): #Main function that incoming text arrays pass through, this is what separates individual "lines" of dialogue
+func parse_master_array(incoming_data) -> void: #Main function that incoming text arrays pass through, this is what separates individual "lines" of dialogue
 	
 	#print("Parse master array incoming: " + str(incoming_data))
 	
@@ -132,22 +130,37 @@ func parse_master_array(incoming_data): #Main function that incoming text arrays
 
 			
 			await parse_text(current_element)
-			
+
 			if not current_element is Dictionary:
+				#print("Awaiting continue dialogue")
+				auto_continue()
 				await continue_dialogue
-			
+			#print("choice_open: " + str(choice_open))
+			#print("Current dialogue index: " + str(current_index))
+			#print("Dialogue table size: " + str(incoming_data.size()))
 			if (current_index + 1 == incoming_data.size()) and not choice_open:
-				#print("Dialogue completed")
-				dialogue_finished = true
-				dialogue_tree_ended.emit()
+				end_dialogue()
+			#Fixes a bug where nested dialogue trees will cause system to get stuck
+			elif (not incoming_data[current_index] is Dictionary) and (current_index + 1 == incoming_data.size()):
+				await choice_receive
+				await text_written
+				end_dialogue()
 				
-func process_dictionary(incoming_data):
+func end_dialogue() -> void:
+	#print("Dialogue completed")
+	dialogue_finished = true
+	dialogue_tree_ended.emit()
+	
+				
+func process_dictionary(incoming_data) -> void:
 
 	#print("Parsing dictionary " + str(incoming_data))
 			
 	send_choice.emit(incoming_data.keys())
 	choice_open = true
+	#print("Awaiting choice")
 	await choice_receive
+	#print("Choice received")
 	choice_open = false
 	
 	
@@ -155,8 +168,7 @@ func process_dictionary(incoming_data):
 	parse_master_array(incoming_data[chosen_choice])
 
 #Function that parses subarrays, this is for dialogue broken up into smaller pieces, usually to run functions and such inbetween
-#Primary determines if you're running through the current main array or a subarray
-func parse_text(incoming_data): 
+func parse_text(incoming_data) -> void: 
 	
 	#print("Parse_text data: " + str(incoming_data))
 
@@ -197,3 +209,11 @@ func parse_text(incoming_data):
 		else:
 		
 			await write_text(str(current_element))
+			
+func auto_continue():
+	if auto_continue_time != -1:
+		#print("Starting auto continue.")
+		await get_tree().create_timer(auto_continue_time).timeout
+		if line_written == true:
+			continue_dialogue.emit()
+			#print("Auto continuing.")

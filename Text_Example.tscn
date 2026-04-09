@@ -23,7 +23,7 @@ func _ready():
 	\"Example starter text, holding input speeds up text, click when text is finished to continue.\",
 	[\"Example text that runs a function, \", func(): print(\"Ah\"), \"printing to the console, this also shows how a nested array works!\"],
 	#{\"Choice 1\": \"Awesome\", \"Choice 2\": \"What\"},
-	{\"[b]How do you make dialogue choices[/b]\": \"Use dictionaries to make dialogue choices, the keys function as choices and the values as outputs!\",
+	{\"How do you make dialogue choices\": \"Use dictionaries to make dialogue choices, the keys function as choices and the values as outputs!\",
 	\"Function return dialogue?\": [func(): return \"Example of a function returning a string, you can use these to make conditional dialogue!\"]},
 	\"And now you're being presented with a dialogue choice, waow.\"
 	

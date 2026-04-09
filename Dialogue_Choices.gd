@@ -20,8 +20,6 @@ func _ready() -> void:
 			self.visible = false
 			#print("Choice chosen " + stored_choice)
 			Text_Handler.choice_receive.emit(stored_choice)
-			
-
 		)
 
 	Text_Handler.send_choice.connect(func(incoming_data): create_choices(incoming_data))
